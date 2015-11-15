@@ -12,13 +12,13 @@ app.use(bodyParser.urlencoded({
 
 app.use(function (req, res, next) {
   console.log('API request: ' + req.method + ' ' + req.path);
-  res.set('Access-Control-Allow-Origin', 'http://halloweenapp.cloudapp.net');
+  res.set('Access-Control-Allow-Origin', 'http://activitybuddy.cloudapp.net');
   next();
 });
 
 app.post('/getBuddy', function (req, res) {
   console.log(req.body);
-  getBuddyForActivity(req.body, function (name) {
+  getBuddyMatches(req.body, function (name) {
     console.log(name);
     res.send(name);
   });

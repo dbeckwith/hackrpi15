@@ -1,5 +1,7 @@
 
-function getBuddyForActivity(body, callback) {
+function getBuddyMatches(body, callback) {
+	var activity = body.activityName;
+	var user = body.user;
 }
 
-modules.export.getBuddyForActivity = getBuddyForActivity;
+modules.export = getBuddyMatches;

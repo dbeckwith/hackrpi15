@@ -30,3 +30,7 @@ app.post('/addUser', function (req, res) {
 app.post('/requestBuddy', function (req, res) {
   requestBuddy(req.body,  res.send);
 });
+
+app.post('/submitRun', function (req, res) {
+  submitRun(req.body,  res.send);
+});

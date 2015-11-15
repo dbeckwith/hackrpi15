@@ -3,11 +3,11 @@
  * Return list of potential matches
  * 
  * activityName: string
- * user: string
+ * userName: string
  */
 function getBuddyMatches(body, callback) {
 	var activityName = body.activityName;
-	var user = body.user;
+	var userName = body.userName;
 	// give back list of matches
 }
 

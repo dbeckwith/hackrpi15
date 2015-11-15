@@ -152,5 +152,4 @@ public class SessionManager {
             return false;
         }
     }
-
 }

@@ -19,7 +19,7 @@ app.use(function (req, res, next) {
 
 var apiEndpoints = [
   'getBuddyMatches',
-  'addUser',
+  'login',
   'requestBuddy',
   'submitRun'
 ];

@@ -10,13 +10,19 @@ function getBuddyMatches(body, callback) {
 
 	dbClient(function (db) {
 		db.collection('useractivity').findOne({'userName': userName}, function(err, userResult) {
+			if (!userResult.metric) {
+				callback({'matches': []});
+			}
+
 			db.collection('useractivity').find({'userName': {$ne: userName}}).toArray(function(err, results) {
 				var compareUsers = [];
 
 				for (var i = 0; i < results.length; i++) {
-					console.log(results[i]);
+					if (!results[i].metric) {
+						continue;
+					}
+					
 					var score = getComparisonScore(userResult.metric, results[i].metric);
-					console.log(score);
 
 					if (score < 5) {
 						compareUsers.push({'userName': results[i].userName, 'weight': score});

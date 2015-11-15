@@ -10,10 +10,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.microsoft.band.BandClient;
 import com.microsoft.band.BandClientManager;
@@ -25,6 +34,8 @@ import com.microsoft.band.tiles.BandTile;
 import com.microsoft.band.tiles.TileEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     ToggleButton sessionButton;
     @Bind(R.id.findBuddiesButton)
     Button findBuddiesButton;
+    @Bind(R.id.buddyMatchesListView)
+    ListView buddyMatchesListView;
 
     String userName;
 
@@ -58,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         ctt.setActivity(this);
         ctt.execute();
         userName = null;
+        buddyMatchesListView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -69,10 +83,8 @@ public class MainActivity extends AppCompatActivity {
     protected BroadcastReceiver tileReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() == TileEvent.ACTION_TILE_OPENED) {
+            if (intent.getAction().equals(TileEvent.ACTION_TILE_OPENED)) {
                 findBuddies();
-            } else if (intent.getAction() == TileEvent.ACTION_TILE_BUTTON_PRESSED) {
-            } else if (intent.getAction() == TileEvent.ACTION_TILE_CLOSED) {
             }
         }
     };
@@ -111,6 +123,30 @@ public class MainActivity extends AppCompatActivity {
         JsonObject req = new JsonObject();
         req.addProperty("userName", userName);
         JsonObject res = BuddyAPI.call("getBuddyMatches", req);
-        Log.d(TAG, res + "");
+        if (res == null) return;
+        buddyMatchesListView.setVisibility(View.VISIBLE);
+        List<JsonObject> matches = new ArrayList<>();
+        Iterator<JsonElement> matchesIterator = res.getAsJsonArray("matches").iterator();
+        JsonObject match;
+        while (matchesIterator.hasNext()) {
+            match = matchesIterator.next().getAsJsonObject();
+            matches.add(match);
+        }
+        buddyMatchesListView.setAdapter(new ArrayAdapter<JsonObject>(this, R.layout.list_item_buddy_match, matches) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = (LayoutInflater) MainActivity.this
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View rowView = inflater.inflate(R.layout.list_item_buddy_match, parent, false);
+                TextView buddyName = (TextView) rowView.findViewById(R.id.buddyName);
+                TextView buddyWeight = (TextView) rowView.findViewById(R.id.buddyWeight);
+
+                buddyName.setText(getItem(position).get("userName").getAsString());
+                buddyWeight.setText(String.format("%3.1f", getItem(position).get("weight").getAsFloat()));
+
+                return rowView;
+            }
+
+        });
     }
 }

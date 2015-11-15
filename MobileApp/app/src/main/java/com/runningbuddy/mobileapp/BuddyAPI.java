@@ -26,7 +26,18 @@ public class BuddyAPI {
     private static final OkHttpClient client = new OkHttpClient();
     private static final Gson gson = new Gson();
 
-    private static AsyncTask<String, Void, JsonObject> apiCall = new AsyncTask<String, Void, JsonObject>() {
+    public static JsonObject call(String method, JsonObject requestBody) {
+        Log.d(TAG, "calling " + method);
+        Log.d(TAG, "body: " + requestBody);
+        try {
+            return new APICallTask().execute(method, gson.toJson(requestBody)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static class APICallTask extends AsyncTask<String, Void, JsonObject> {
         @Override
         protected JsonObject doInBackground(String... params) {
             RequestBody body = RequestBody.create(JSONType, params[1]);
@@ -44,15 +55,6 @@ public class BuddyAPI {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
-        }
-    };
-
-    public static JsonObject call(String method, JsonObject requestBody) {
-        try {
-            return apiCall.execute(method, gson.toJson(requestBody)).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
             return null;
         }
     }

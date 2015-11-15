@@ -10,4 +10,4 @@ function requestBuddy(body, callback) {
 	var requestee = body.requestee;
 }
 
-modules.export = requestBuddy;
+module.exports = requestBuddy;

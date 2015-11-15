@@ -3,16 +3,17 @@ var dbClient = require('./mongodbsetup');
 /*
  * Add new user to database
  *
- * accountName: string
+ * userName: string
  */
 function addUser(body, callback) {
-	var accountName = body.accountName;
+	var userName = body.userName;
 
 	dbClient(function (db) {
-		db.collection('activitybuddy').insert(
-			{'userName': accountName, 'runs': [], 'metrics': null},
-			callback);
+		db.collection('useractivity').insert(
+			{'userName': userName, 'runs': [], 'metric': null}, function(err, result) {
+				callback();
+			});
 	});
 }
 
-modules.export = addUser;
+module.exports = addUser;

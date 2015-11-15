@@ -27,6 +27,18 @@ var apiEndpoints = [
 _.each(apiEndpoints, function (funcName) {
   var func = require('./' + funcName);
   app.post('/' + funcName, function (req, res) {
-    func(req.body, res.send);
+    func(req.body, function (data) {
+      if (data)
+        res.send(JSON.stringify(data));
+      else
+        res.end(); 
+    });
   });
+});
+
+var server = app.listen(PORT, function () {
+  var host = server.address().address;
+  var port = server.address().port;
+
+  console.log('Activity buddy app listening at http://%s:%s', host, port);
 });

@@ -1,4 +1,5 @@
 var dbClient = require('./mongodbsetup');
+var _ = require('lodash');
 
 /*
  * Return nothing
@@ -47,4 +48,4 @@ function submitRun(body, callback) {
     });
 }
 
-modules.export = submitRun;
+module.exports = submitRun;

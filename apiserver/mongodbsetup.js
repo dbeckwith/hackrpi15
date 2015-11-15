@@ -8,7 +8,7 @@ function getConnection(callback) {
 		callback(db);
 	}
 	else {
-		dbClient.connect("mongodb://localhost/halloweenapp", function(err, dbconn) {
+		dbClient.connect("mongodb://localhost/activitybuddy", function(err, dbconn) {
 		  if (!err) {
 		    console.log("Connection made");
 		    db = dbconn;

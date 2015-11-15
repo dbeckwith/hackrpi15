@@ -2,6 +2,9 @@ var PORT = 8080;
 
 var express = require('express');
 var bodyParser = require('body-parser');
+var getBuddyMatches = require('./getBuddyMatches');
+var addUser = require('./addUser');
+var requestBuddy = require('./requestBuddy');
 
 var app = express();
 
@@ -16,10 +19,14 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.post('/getBuddy', function (req, res) {
-  console.log(req.body);
-  getBuddyMatches(req.body, function (name) {
-    console.log(name);
-    res.send(name);
-  });
+app.post('/getBuddyMatches', function (req, res) {
+  getBuddyMatches(req.body, res.send);
+});
+
+app.post('/addUser', function (req, res) {
+  addUser(req.body,  res.send);
+});
+
+app.post('/requestBuddy', function (req, res) {
+  requestBuddy(req.body,  res.send);
 });

@@ -32,7 +32,7 @@ public class BuddyAPI {
         try {
             return new APICallTask().execute(method, gson.toJson(requestBody)).get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error calling API method", e);
             return null;
         }
     }
@@ -48,12 +48,13 @@ public class BuddyAPI {
             try {
                 Response response = client.newCall(request).execute();
                 Log.d(TAG, response.toString());
+                if (response.code() != 200) return null;
                 String responseBody = response.body().string();
                 Log.d(TAG, responseBody);
                 if (responseBody.length() == 0) return null;
-                else return gson.fromJson(response.body().string(), JsonObject.class);
+                else return gson.fromJson(responseBody, JsonObject.class);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, "Error sending API request", e);
             }
             return null;
         }

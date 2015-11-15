@@ -9,8 +9,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add User"
-        android:id="@+id/addUserButton"
+        android:text="Login"
+        android:id="@+id/loginButton"
         android:layout_below="@+id/userNameField"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -19,7 +19,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="User"
         android:ems="10"
         android:id="@+id/userNameField"
         android:layout_alignParentTop="true"
@@ -31,8 +30,17 @@
         android:layout_height="wrap_content"
         android:text="New ToggleButton"
         android:id="@+id/sessionButton"
-        android:layout_below="@+id/addUserButton"
+        android:layout_below="@+id/loginButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:checked="false" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find Buddies"
+        android:id="@+id/findBuddiesButton"
+        android:layout_below="@+id/sessionButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

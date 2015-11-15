@@ -2,9 +2,7 @@ var PORT = 8080;
 
 var express = require('express');
 var bodyParser = require('body-parser');
-var getBuddyMatches = require('./getBuddyMatches');
-var addUser = require('./addUser');
-var requestBuddy = require('./requestBuddy');
+var _ = require('lodash');
 
 var app = express();
 
@@ -19,18 +17,16 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.post('/getBuddyMatches', function (req, res) {
-  getBuddyMatches(req.body, res.send);
-});
+var apiEndpoints = [
+  'getBuddyMatches',
+  'addUser',
+  'requestBuddy',
+  'submitRun'
+];
 
-app.post('/addUser', function (req, res) {
-  addUser(req.body,  res.send);
-});
-
-app.post('/requestBuddy', function (req, res) {
-  requestBuddy(req.body,  res.send);
-});
-
-app.post('/submitRun', function (req, res) {
-  submitRun(req.body,  res.send);
+_.each(apiEndpoints, function (funcName) {
+  var func = require('./' + funcName);
+  app.post('/' + funcName, function (req, res) {
+    func(req.body, res.send);
+  });
 });
